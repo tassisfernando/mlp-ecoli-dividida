@@ -1,63 +1,35 @@
 package runner;
 
+import model.Database;
 import model.Perceptron;
 
 import static java.lang.Math.abs;
 
 public class PerceptronRunner {
 
-    /* AND
-    private static final Double[][][] DATABASE = {
-            { { 0D, 0D }, { 0D } },
-            { { 0D, 1D }, { 0D } },
-            { { 1D, 0D }, { 0D } },
-            { { 1D, 1D }, { 1D } }
-    };
-    */
-
-    /* XOR
-    private static final Double[][][] DATABASE = {
-            { { 0D, 0D }, { 0D } },
-            { { 0D, 1D }, { 1D } },
-            { { 1D, 0D }, { 1D } },
-            { { 1D, 1D }, { 0D } }
-    };
-    */
-
-    /* OR
-    private static final Double[][][] DATABASE = {
-            { { 0D, 0D }, { 0D } },
-            { { 0D, 1D }, { 1D } },
-            { { 1D, 0D }, { 1D } },
-            { { 1D, 1D }, { 1D } }
-    };
-    */
-
-    /* Robô */
-    private static final Double[][][] DATABASE = {
-            { { 0D, 0D, 0D }, { 1D, 1D } },
-            { { 0D, 0D, 1D }, { 0D, 1D } },
-            { { 0D, 1D, 0D }, { 1D, 0D } },
-            { { 0D, 1D, 1D }, { 0D, 1D } },
-            { { 1D, 0D, 0D }, { 1D, 0D } },
-            { { 1D, 0D, 1D }, { 1D, 0D } },
-            { { 1D, 1D, 0D }, { 1D, 0D } },
-            { { 1D, 1D, 1D }, { 1D, 0D } }
-    };
+    /* AND */
+//    private static final Double[][][] DATABASE = {
+//            { { 0D, 0D }, { 0D } },
+//            { { 0D, 1D }, { 0D } },
+//            { { 1D, 0D }, { 0D } },
+//            { { 1D, 1D }, { 1D } }
+//    };
 
     public static void main(String[] args) {
-        final Double NI = 0.1;
-        final int N_EPOCAS = 1000;
+        final double NI = 0.001;
+        final int N_EPOCAS = 10000;
+        Database dataModel = new Database();
+        double[][][] database = dataModel.getData();
 
-        Perceptron perceptron = new Perceptron(DATABASE[0][0].length, DATABASE[0][1].length, NI);
-        Double erroEp = 0D, erroAm = 0D;
+        Perceptron perceptron = new Perceptron(database[0][0].length, database[0][1].length, NI);
+        double erroEp = 0D, erroAm;
 
         for(int e = 0; e < N_EPOCAS; e++) {
             erroEp = 0D;
-            for (Double[][] sample : DATABASE) {
-                Double[] x = sample[0];
-                Double[] y = sample[1];
-                Double[] out = perceptron.learn(x, y);
+            for (double[][] sample : database) {
+                double[] x = sample[0];
+                double[] y = sample[1];
+                double[] out = perceptron.learn(x, y);
 
                 erroAm = sumErro(y, out);
                 erroEp += erroAm;
@@ -67,7 +39,7 @@ public class PerceptronRunner {
         }
     }
 
-    private static Double sumErro(Double[] y, Double[] out) {
+    private static double sumErro(double[] y, double[] out) {
         double sum = 0D;
         for(int i = 0; i < y.length; i++) {
             sum += abs(y[i] - out[i]);

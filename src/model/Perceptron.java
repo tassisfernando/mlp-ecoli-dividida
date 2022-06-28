@@ -7,19 +7,19 @@ import java.util.Random;
 import static java.lang.System.arraycopy;
 
 public class Perceptron {
-    private Double ni;
+    private double ni;
     private int qtdIn;
     private int qtdOut;
-    private Double[][] w;
+    private double[][] w;
 
-    private final static Double RANGE_MIN = -0.03;
-    private final static Double RANGE_MAX = 0.03;
+    private final static double RANGE_MIN = -0.03;
+    private final static double RANGE_MAX = 0.03;
 
-    public Perceptron(int qtdIn, int qtdOut, Double ni) {
+    public Perceptron(int qtdIn, int qtdOut, double ni) {
         this.qtdIn = qtdIn;
         this.qtdOut = qtdOut;
         this.ni = ni;
-        this.w = new Double[qtdIn + 1][qtdOut];
+        this.w = new double[qtdIn + 1][qtdOut];
 
         this.gerarRandomW();
     }
@@ -33,9 +33,9 @@ public class Perceptron {
         }
     }
 
-    public Double[] learn(Double[] xIn, Double[] y) {
-        Double[] x = new Double[xIn.length + 1];
-        Double[] out = new Double[y.length];
+    public double[] learn(double[] xIn, double[] y) {
+        double[] x = new double[xIn.length + 1];
+        double[] out = new double[y.length];
 
         generateXArray(xIn, x);
 
@@ -55,7 +55,7 @@ public class Perceptron {
         return out;
     }
 
-    public void generateXArray(Double[] xIn, Double[] x) {
+    public void generateXArray(double[] xIn, double[] x) {
         arraycopy(xIn, 0, x, 0, xIn.length);
         x[x.length - 1] = 1D;
     }
