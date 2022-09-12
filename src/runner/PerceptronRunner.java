@@ -8,14 +8,6 @@ import static java.lang.Math.abs;
 
 public class PerceptronRunner {
 
-    /* AND */
-//    private static final Double[][][] DATABASE = {
-//            { { 0D, 0D }, { 0D } },
-//            { { 0D, 1D }, { 0D } },
-//            { { 1D, 0D }, { 0D } },
-//            { { 1D, 1D }, { 1D } }
-//    };
-
     public static void main(String[] args) {
         final double NI = 0.001;
         final int N_EPOCAS = 10000;
