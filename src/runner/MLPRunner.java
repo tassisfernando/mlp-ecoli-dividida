@@ -10,7 +10,7 @@ public class PerceptronRunner {
 
     public static void main(String[] args) {
         final double NI = 0.001;
-        final int N_EPOCAS = 10000;
+        final int N_EPOCAS = 50000;
         final int QTD_H = 2;
 
         Database dataModel = new Database();
