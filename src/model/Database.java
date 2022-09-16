@@ -48,8 +48,6 @@ public class Database {
                 data[i][1] = output;
                 i++;
             }
-
-            System.out.println();
         } catch (FileNotFoundException e) {
             System.out.println("Erro: arquivo com dados não encontrado.");
         }

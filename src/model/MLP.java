@@ -98,6 +98,36 @@ public class MLP {
         return teta;
     }
 
+    public double[] executar(double[] xIn) {
+        double[] x = new double[xIn.length + 1];
+        //copia do Xin para o X
+        generateXArray(xIn, x);
+
+        // Calcula a saída da camada intermediária
+        double[] hiddenOut = new double[qtdH + 1]; // representa a saída da camada intermediária
+
+        for (int h = 0; h < qtdH; h++) {
+            double u = 0;
+            for (int i = 0; i < x.length; i++) {
+                u += x[i] * wh[i][h];
+            }
+            hiddenOut[h] = MathUtils.sig(u);;
+        }
+        hiddenOut[qtdH] = 1;
+
+        // calcula a saida obtida
+        double[] teta = new double[out];
+        for (int j = 0; j < teta.length; j++) {
+            double u = 0;
+            for (int h = 0; h < hiddenOut.length; h++) {
+                u += hiddenOut[h] * wo[h][j];
+            }
+            teta[j] = MathUtils.sig(u);
+        }
+
+        return teta;
+    }
+
     private double calculaSomatorioPesos(double[] deltaO, int h) {
         double soma = 0d;
         for(int j = 0; j < out; j++) {

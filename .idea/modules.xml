@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MLP_Ecoli.iml" filepath="$PROJECT_DIR$/MLP_Ecoli.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MLP_Ecoli_Dividida.iml" filepath="$PROJECT_DIR$/MLP_Ecoli_Dividida.iml" />
     </modules>
   </component>
 </project>
