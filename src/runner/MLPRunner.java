@@ -7,27 +7,31 @@ import utils.FileUtils;
 import java.io.IOException;
 
 import static java.lang.Math.abs;
-import static utils.FileUtils.ARQUIVO_BASE_TESTE;
-import static utils.FileUtils.ARQUIVO_BASE_TREINO;
+import static utils.FileUtils.*;
 
 public class MLPRunner {
+
+    private static final int N_EPOCAS = 100000;
+    private static final StringBuilder errosTreino = new StringBuilder();
+    private static final StringBuilder errosTeste = new StringBuilder();
+    private static final StringBuilder epocas = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         FileUtils.clearFiles();
 
         final double NI = 0.001;
-        final int N_EPOCAS = 10000;
         final int QTD_H = 2;
 
         Database dataModel = new Database();
-        double[][][] database = dataModel.getData();
+        double[][][] dataTreino = dataModel.getDataTreino();
+        double[][][] dataTeste = dataModel.getDataTeste();
 
-        MLP mlp = new MLP(database[0][0].length, database[0][1].length, QTD_H, NI);
+        MLP mlp = new MLP(dataTreino[0][0].length, dataTreino[0][1].length, QTD_H, NI);
         double erroEpTreino, erroEpTeste, erroAm;
 
         for(int e = 0; e < N_EPOCAS; e++) {
             erroEpTreino = 0D;
-            for (double[][] sample : database) {
+            for (double[][] sample : dataTreino) {
                 double[] x = sample[0];
                 double[] y = sample[1];
                 double[] out = mlp.treinar(x, y);
@@ -37,7 +41,7 @@ public class MLPRunner {
             }
 
             erroEpTeste = 0D;
-            for (double[][] sample : database) {
+            for (double[][] sample : dataTeste) {
                 double[] x = sample[0];
                 double[] y = sample[1];
                 double[] out = mlp.executar(x);
@@ -54,11 +58,18 @@ public class MLPRunner {
     }
 
     private static void escreveArquivos(int epoca, Double erroTreino, Double erroTeste) {
-        try {
-            FileUtils.fileWriter(ARQUIVO_BASE_TREINO, erroTreino, epoca);
-            FileUtils.fileWriter(ARQUIVO_BASE_TESTE, erroTeste, epoca);
-        } catch (IOException e) {
-            System.out.println("Erro ao escrever arquivo: " + e.getMessage());
+        errosTreino.append(erroTreino).append("\n");
+        errosTeste.append(erroTeste).append("\n");
+        epocas.append(epoca).append("\n");
+
+        if (epoca == N_EPOCAS) {
+            try {
+                FileUtils.fileWriter(ARQUIVO_BASE_TREINO, errosTreino.toString());
+                FileUtils.fileWriter(ARQUIVO_BASE_TESTE, errosTeste.toString());
+                FileUtils.fileWriter(ARQUIVO_EPOCAS, epocas.toString());
+            } catch (IOException e) {
+                System.out.println("Erro ao escrever arquivo: " + e.getMessage());
+            }
         }
     }
 
