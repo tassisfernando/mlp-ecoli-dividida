@@ -1,6 +1,7 @@
 package model;
 
 import enums.EcoliOutTypeEnum;
+import utils.RandomUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,30 +24,47 @@ import java.util.stream.Collectors;
  *
  */
 public class Database {
-    private double[][][] data;
+    private double[][][] dataTreino;
+    private double[][][] dataTeste;
     private double[] input;
     private double[] output;
+
+    private static final int MAX_INDEX_ECOLI = 336;
+    private static final int MAX_INDEX_TREINO = 252;
+    private static final int MAX_INDEX_TESTE = MAX_INDEX_ECOLI - MAX_INDEX_TREINO;
 
     public Database() {
         readData();
     }
 
     private void readData() {
-        data = new double[336][7][];
+        dataTreino = new double[MAX_INDEX_TREINO][7][];
+        dataTeste = new double[MAX_INDEX_TESTE][7][];
         input = new double[7];
         output = new double[3];
+
+        List<Integer> testePos = RandomUtils.getRandomNumbers(MAX_INDEX_TESTE, MAX_INDEX_ECOLI);
 
         try {
             File file = new File("ecoli.data");
             Scanner scn = new Scanner(file);
-            int i = 0;
+            int iTreino = 0;
+            int iTeste = 0;
+            int cont = 0;
 
             while (scn.hasNext()) {
                 String row = scn.nextLine();
                 readRow(row);
-                data[i][0] = input;
-                data[i][1] = output;
-                i++;
+                if (testePos.contains(cont)) {
+                    dataTeste[iTeste][0] = input;
+                    dataTeste[iTeste][1] = output;
+                    iTeste++;
+                } else {
+                    dataTreino[iTreino][0] = input;
+                    dataTreino[iTreino][1] = output;
+                    iTreino++;
+                }
+                cont++;
             }
         } catch (FileNotFoundException e) {
             System.out.println("Erro: arquivo com dados não encontrado.");
@@ -67,7 +85,11 @@ public class Database {
         stringRow.removeIf(String::isEmpty);
     }
 
-    public double[][][] getData() {
-        return data;
+    public double[][][] getDataTreino() {
+        return dataTreino;
+    }
+
+    public double[][][] getDataTeste() {
+        return dataTeste;
     }
 }
